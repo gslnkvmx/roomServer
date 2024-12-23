@@ -1,6 +1,17 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const server = require("http").createServer(app);
 const cors = require("cors");
+const user = require("./routes/user");
+const InitiateMongoServer = require("./config/db");
+
+// Initiate Mongo Server
+InitiateMongoServer();
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const io = require("socket.io")(server, {
   cors: {
@@ -16,6 +27,8 @@ const PORT = process.env.PORT || 5000;
 app.get("/", (req, res) => {
   res.send("Running");
 });
+
+app.use("/user", user);
 
 io.on("connection", (socket) => {
   socket.emit("me", socket.id);
