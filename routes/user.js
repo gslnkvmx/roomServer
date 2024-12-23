@@ -68,6 +68,7 @@ router.post(
           if (err) throw err;
           res.status(200).json({
             token,
+            user,
           });
         }
       );
@@ -121,12 +122,13 @@ router.post(
         payload,
         "randomString",
         {
-          expiresIn: 3600,
+          expiresIn: "7d",
         },
         (err, token) => {
           if (err) throw err;
           res.status(200).json({
             token,
+            user,
           });
         }
       );
