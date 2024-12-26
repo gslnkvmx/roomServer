@@ -3,6 +3,7 @@ const app = express();
 const server = require("http").createServer(app);
 const cors = require("cors");
 const user = require("./routes/user");
+const friend = require("./routes/friend");
 const InitiateMongoServer = require("./config/db");
 
 // Initiate Mongo Server
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", user);
+app.use("/friend", friend);
 
 io.on("connection", (socket) => {
   socket.emit("me", socket.id);

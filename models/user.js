@@ -1,5 +1,18 @@
 const mongoose = require("mongoose");
 
+const FriendSchema = mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  email: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["accepted", "pending", "rejected"],
+    default: "pending",
+  },
+});
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -17,6 +30,7 @@ const UserSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  friends: [FriendSchema],
 });
 
 // export model user with UserSchema

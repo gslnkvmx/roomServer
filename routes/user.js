@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const User = require("../models/user");
+const user = require("../models/user");
 
 /**
  * @method - POST
@@ -154,6 +155,44 @@ router.get("/me", auth, async (req, res) => {
     res.json(user);
   } catch (e) {
     res.send({ message: "Error in Fetching user" });
+  }
+});
+
+/**
+ * @method - GET
+ * @param - /user/friends
+ * @description - Get all user's friends
+ */
+
+router.get("/friends", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    const friends = user.friends.filter(
+      (friend) => friend.status === "accepted"
+    );
+
+    res.json(friends);
+  } catch (e) {
+    res.send({ message: "Error in Fetching friends" });
+  }
+});
+
+/**
+ * @method - GET
+ * @param - /user/friendRequests
+ * @description - Get all user's friends
+ */
+
+router.get("/friendRequests", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const pendingFriends = user.friends.filter(
+      (friend) => friend.status === "pending"
+    );
+    res.json(pendingFriends);
+  } catch (e) {
+    res.send({ message: "Error in Fetching friends" });
   }
 });
 
