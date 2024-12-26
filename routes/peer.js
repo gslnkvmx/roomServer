@@ -12,7 +12,7 @@ const Peer = require("../models/peer");
 
 router.post("", auth, async (req, res) => {
   try {
-    const { username, email, peerId } = req.body;
+    const { userId, username, peerId } = req.body;
     let peer = await Peer.findOne({
       email,
     });
@@ -21,8 +21,8 @@ router.post("", auth, async (req, res) => {
     } catch {}
 
     peer = new Peer({
+      userId,
       username,
-      email,
       peerId,
     });
     await peer.save();
@@ -34,11 +34,13 @@ router.post("", auth, async (req, res) => {
 
 router.get("", auth, async (req, res) => {
   try {
-    const { email } = req.body;
+    let userId = req.query.friendId;
+    console.log(req.query.friendId);
     const peer = await Peer.findOne({
-      email,
+      userId,
     });
 
+    console.log(peer);
     res.json(peer);
   } catch (e) {
     res.send({ message: e.message });
