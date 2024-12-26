@@ -78,4 +78,26 @@ router.put("/accept", auth, async (req, res) => {
   }
 });
 
+router.put("/refuse", auth, async (req, res) => {
+  try {
+    const { friendId } = req.body;
+    const user = await User.findById(req.user.id);
+    try {
+      sender = user.friends.find(
+        (f) => f._id.equals(friendId) && f.status === "pending"
+      );
+    } catch {
+      throw new Error("Can't find pending friend with such id.");
+    }
+
+    await user.friends.pull({ _id: friendId });
+
+    await user.save();
+
+    res.json(user);
+  } catch (e) {
+    res.send({ message: e.message });
+  }
+});
+
 module.exports = router;
