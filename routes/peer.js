@@ -17,7 +17,7 @@ router.post("", auth, async (req, res) => {
       userId,
     });
     try {
-      await Peer.updateOne({ email: email }, { $set: { peerId: peerId } });
+      await Peer.updateOne({ userId: userId }, { $set: { peerId: peerId } });
     } catch {}
 
     peer = new Peer({
