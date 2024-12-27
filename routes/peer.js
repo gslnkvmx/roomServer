@@ -14,7 +14,7 @@ router.post("", auth, async (req, res) => {
   try {
     const { userId, username, peerId } = req.body;
     let peer = await Peer.findOne({
-      email,
+      userId,
     });
     try {
       await Peer.updateOne({ email: email }, { $set: { peerId: peerId } });
